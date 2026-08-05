@@ -10,4 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.16" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ArtemisBankingPro.Application\ArtemisBankingPro.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ArtemisBankingPro.Infrastructure\ArtemisBankingPro.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ArtemisBankingPro.Persistence\ArtemisBankingPro.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

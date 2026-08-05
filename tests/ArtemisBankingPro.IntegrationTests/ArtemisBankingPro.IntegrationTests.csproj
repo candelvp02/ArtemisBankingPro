@@ -18,4 +18,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Infrastructure\ArtemisBankingPro.Persistence\ArtemisBankingPro.Persistence.csproj" />
+    <ProjectReference Include="..\..\src\Core\ArtemisBankingPro.Application\ArtemisBankingPro.Application.csproj" />
+  </ItemGroup>
+
 </Project>

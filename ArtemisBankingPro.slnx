@@ -1,2 +1,19 @@
 <Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/ArtemisBankingPro.Application/ArtemisBankingPro.Application.csproj" />
+    <Project Path="src/Core/ArtemisBankingPro.Domain/ArtemisBankingPro.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/ArtemisBankingPro.Infrastructure/ArtemisBankingPro.Infrastructure.csproj" />
+    <Project Path="src/Infrastructure/ArtemisBankingPro.Persistence/ArtemisBankingPro.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+    <Project Path="src/Presentation/ArtemisBankingPro.WebAPI/ArtemisBankingPro.WebAPI.csproj" />
+    <Project Path="src/Presentation/ArtemisBankingPro.WebApp/ArtemisBankingPro.WebApp.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ArtemisBankingPro.IntegrationTests/ArtemisBankingPro.IntegrationTests.csproj" />
+    <Project Path="tests/ArtemisBankingPro.UnitTests/ArtemisBankingPro.UnitTests.csproj" />
+  </Folder>
 </Solution>
