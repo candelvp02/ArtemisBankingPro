@@ -15,7 +15,7 @@ builder.Host.UseSerilog();
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 

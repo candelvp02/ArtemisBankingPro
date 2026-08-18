@@ -1,14 +1,19 @@
 ﻿using System.Reflection;
 using ArtemisBankingPro.Application.Common.Behaviors;
+using ArtemisBankingPro.Application.Common.Models;
+using ArtemisBankingPro.Application.Services.Implementations;
+using ArtemisBankingPro.Application.Services.Interfaces;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ArtemisBankingPro.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(
+        this IServiceCollection services, IConfiguration configuration)
     {
         var assembly = Assembly.GetExecutingAssembly();
 
@@ -18,6 +23,10 @@ public static class DependencyInjection
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
+        services.Configure<AppSettings>(configuration.GetSection(AppSettings.SectionName));
+
+        services.AddScoped<IAuthService, AuthService>();
 
         return services;
     }
