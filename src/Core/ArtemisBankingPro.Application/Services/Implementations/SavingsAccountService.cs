@@ -12,16 +12,13 @@ namespace ArtemisBankingPro.Application.Services.Implementations;
 public class SavingsAccountService : ISavingsAccountService
 {
     private readonly ISavingsAccountRepository _savingsAccountRepository;
-    private readonly ITransactionRepository _transactionRepository;
     private readonly ITransactionService _transactionService;
 
     public SavingsAccountService(
         ISavingsAccountRepository savingsAccountRepository,
-        ITransactionRepository transactionRepository,
         ITransactionService transactionService)
     {
         _savingsAccountRepository = savingsAccountRepository;
-        _transactionRepository = transactionRepository;
         _transactionService = transactionService;
     }
 
@@ -40,21 +37,6 @@ public class SavingsAccountService : ISavingsAccountService
 
         await _savingsAccountRepository.AddAsync(account);
         await _savingsAccountRepository.SaveChangesAsync();
-
-        if (initialAmount > 0)
-        {
-            var transaction = new Transaction
-            {
-                SavingsAccountId = account.Id,
-                Type = TransactionType.Credit,
-                Amount = initialAmount,
-                BalanceAfter = account.Balance,
-                Description = "Initial deposit on account opening"
-            };
-
-            await _transactionRepository.AddAsync(transaction);
-            await _transactionRepository.SaveChangesAsync();
-        }
 
         return account.Id;
     }
@@ -77,21 +59,6 @@ public class SavingsAccountService : ISavingsAccountService
 
         await _savingsAccountRepository.AddAsync(account);
         await _savingsAccountRepository.SaveChangesAsync();
-
-        if (dto.InitialAmount > 0)
-        {
-            var transaction = new Transaction
-            {
-                SavingsAccountId = account.Id,
-                Type = TransactionType.Credit,
-                Amount = dto.InitialAmount,
-                BalanceAfter = account.Balance,
-                Description = "Initial deposit on secondary account opening"
-            };
-
-            await _transactionRepository.AddAsync(transaction);
-            await _transactionRepository.SaveChangesAsync();
-        }
 
         return account.Id;
     }
@@ -165,23 +132,7 @@ public class SavingsAccountService : ISavingsAccountService
         var account = await _savingsAccountRepository.GetByAccountNumberAsync(accountNumber)
             ?? throw new NotFoundException(nameof(SavingsAccount), accountNumber);
 
-        var (transactions, totalCount) = await _transactionRepository.GetPagedByAccountIdAsync(account.Id, pageNumber, pageSize);
-
-        return new PagedResult<TransactionDto>
-        {
-            Items = transactions.Select(t => new TransactionDto
-            {
-                Id = t.Id,
-                Type = t.Type.ToString(),
-                Amount = t.Amount,
-                BalanceAfter = t.BalanceAfter,
-                Description = t.Description,
-                CreatedAt = t.CreatedAt
-            }).ToList(),
-            TotalCount = totalCount,
-            PageNumber = pageNumber,
-            PageSize = pageSize
-        };
+        throw new NotImplementedException("ITransactionRepository fue eliminado. Implementar consulta mediante ITransactionService.");
     }
 
     public async Task<SavingsAccountDto?> GetPrincipalAccountAsync(string applicationUserId)

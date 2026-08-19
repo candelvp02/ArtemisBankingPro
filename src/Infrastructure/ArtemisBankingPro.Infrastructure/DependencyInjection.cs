@@ -1,4 +1,5 @@
 ﻿using ArtemisBankingPro.Application.Common.Interfaces;
+using ArtemisBankingPro.Domain.Interfaces;
 using ArtemisBankingPro.Infrastructure.Email;
 using ArtemisBankingPro.Infrastructure.Identity;
 using ArtemisBankingPro.Infrastructure.Security;
@@ -23,7 +24,6 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<IPasswordHasher, Sha256Hasher>();
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
-
         return services;
     }
 }

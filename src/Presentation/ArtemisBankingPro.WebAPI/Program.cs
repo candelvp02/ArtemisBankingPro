@@ -1,5 +1,5 @@
-using System.Text;
 using ArtemisBankingPro.Application;
+using ArtemisBankingPro.Domain.Interfaces;
 using ArtemisBankingPro.Infrastructure;
 using ArtemisBankingPro.Infrastructure.Identity;
 using ArtemisBankingPro.Infrastructure.Logging;
@@ -10,6 +10,7 @@ using ArtemisBankingPro.WebAPI.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
