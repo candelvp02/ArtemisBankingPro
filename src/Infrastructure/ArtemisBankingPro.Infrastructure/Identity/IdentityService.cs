@@ -15,6 +15,9 @@ public class IdentityService : IIdentityService
         _userManager = userManager;
     }
 
+    public async Task<ApplicationUser?> GetUserByCedulaAsync(string cedula) =>
+    await _userManager.Users.FirstOrDefaultAsync(u => u.Cedula == cedula);
+
     public async Task<(IdentityResultDto Result, string UserId)> CreateUserAsync(
         string userName, string email, string password, string role,
         string firstName, string lastName, string cedula)

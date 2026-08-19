@@ -1,0 +1,29 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.SavingsAccounts.CreateSecondaryAccountViewModel
+@{
+    ViewData["Title"] = "New Secondary Account";
+}
+
+<h2>New Secondary Account</h2>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="Create" method="post" class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="Cedula" class="form-label"></label>
+        <input asp-for="Cedula" class="form-control" />
+        <span asp-validation-for="Cedula" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="InitialAmount" class="form-label"></label>
+        <input asp-for="InitialAmount" class="form-control" />
+        <span asp-validation-for="InitialAmount" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

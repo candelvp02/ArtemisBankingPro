@@ -30,6 +30,11 @@ public class UserService : IUserService
         _appSettings = appSettings.Value;
     }
 
+    public async Task<string?> GetUserIdByCedulaAsync(string cedula)
+    {
+        var user = await _identityService.GetUserByCedulaAsync(cedula);
+        return user?.Id;
+    }
     public async Task<PagedResult<UserDto>> GetUsersAsync(string? role, int pageNumber, int pageSize)
     {
         var (users, totalCount) = await _identityService.GetUsersPagedAsync(

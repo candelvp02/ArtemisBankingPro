@@ -13,4 +13,5 @@ public interface IUserService
     Task<bool> UserNameExistsAsync(string userName);
     Task<bool> EmailExistsAsync(string email);
     Task<bool> CedulaExistsAsync(string cedula);
+    Task<string?> GetUserIdByCedulaAsync(string cedula);
 }

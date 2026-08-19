@@ -1,0 +1,94 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.SavingsAccounts.SavingsAccountListViewModel
+@{
+    ViewData["Title"] = "Savings Accounts";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Savings Accounts</h2>
+    <a asp-action="Create" class="btn btn-primary">New secondary account</a>
+</div>
+
+@if (TempData["SuccessMessage"] is not null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] is not null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="type" class="form-select" onchange="this.form.submit()">
+            <option value="">All types</option>
+            <option value="Principal" selected="@(Model.TypeFilter == "Principal")">Principal</option>
+            <option value="Secondary" selected="@(Model.TypeFilter == "Secondary")">Secondary</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">All statuses</option>
+            <option value="Active" selected="@(Model.StatusFilter == "Active")">Active</option>
+            <option value="Cancelled" selected="@(Model.StatusFilter == "Cancelled")">Cancelled</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="text" name="cedula" value="@Model.CedulaFilter" class="form-control" placeholder="Search by cedula" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Filter</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Account #</th>
+            <th>Owner</th>
+            <th>Cedula</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Balance</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model.Accounts)
+        {
+            <tr>
+                <td>@account.AccountNumber</td>
+                <td>@account.OwnerFullName</td>
+                <td>@account.OwnerCedula</td>
+                <td>@account.Type</td>
+                <td>
+                    <span class="badge @(account.Status == "Active" ? "bg-success" : "bg-secondary")">
+                        @account.Status
+                    </span>
+                </td>
+                <td>@account.Balance.ToString("C")</td>
+                <td class="text-end">
+                    <a asp-action="Detail" asp-route-accountNumber="@account.AccountNumber" class="btn btn-sm btn-outline-secondary">Detail</a>
+                    @if (account.Type == "Secondary" && account.Status == "Active")
+                    {
+                        <form asp-action="Cancel" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@account.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@i"
+                   asp-route-status="@Model.StatusFilter" asp-route-type="@Model.TypeFilter" asp-route-cedula="@Model.CedulaFilter">@i</a>
+            </li>
+        }
+    </ul>
+</nav>

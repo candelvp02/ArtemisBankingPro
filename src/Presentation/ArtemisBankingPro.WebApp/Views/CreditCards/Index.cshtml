@@ -1,0 +1,80 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.CreditCards.CreditCardListViewModel
+@{
+    ViewData["Title"] = "Credit Cards";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Credit Cards</h2>
+    <a asp-action="Assign" class="btn btn-primary">Assign new card</a>
+</div>
+
+@if (TempData["SuccessMessage"] is not null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] is not null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">All statuses</option>
+            <option value="Active" selected="@(Model.StatusFilter == "Active")">Active</option>
+            <option value="Cancelled" selected="@(Model.StatusFilter == "Cancelled")">Cancelled</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="text" name="cedula" value="@Model.CedulaFilter" class="form-control" placeholder="Search by cedula" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Filter</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Card</th>
+            <th>Owner</th>
+            <th>Cedula</th>
+            <th>Limit</th>
+            <th>Debt</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var card in Model.Cards)
+        {
+            <tr>
+                <td>@card.MaskedNumber</td>
+                <td>@card.OwnerFullName</td>
+                <td>@card.OwnerCedula</td>
+                <td>@card.CreditLimit.ToString("C")</td>
+                <td>@card.CurrentDebt.ToString("C")</td>
+                <td>
+                    <span class="badge @(card.Status == "Active" ? "bg-success" : "bg-secondary")">
+                        @card.Status
+                    </span>
+                </td>
+                <td class="text-end">
+                    <a asp-action="Detail" asp-route-id="@card.Id" class="btn btn-sm btn-outline-secondary">Detail</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@i"
+                   asp-route-status="@Model.StatusFilter" asp-route-cedula="@Model.CedulaFilter">@i</a>
+            </li>
+        }
+    </ul>
+</nav>

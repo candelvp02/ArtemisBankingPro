@@ -1,0 +1,29 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.CreditCards.AssignCardViewModel
+@{
+    ViewData["Title"] = "Assign Credit Card";
+}
+
+<h2>Assign Credit Card</h2>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="Assign" method="post" class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="Cedula" class="form-label"></label>
+        <input asp-for="Cedula" class="form-control" />
+        <span asp-validation-for="Cedula" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="CreditLimit" class="form-label"></label>
+        <input asp-for="CreditLimit" class="form-control" />
+        <span asp-validation-for="CreditLimit" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Assign</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

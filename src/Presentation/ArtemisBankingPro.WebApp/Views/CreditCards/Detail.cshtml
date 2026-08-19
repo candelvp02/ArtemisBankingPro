@@ -1,0 +1,55 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.CreditCards.CardDetailViewModel
+@{
+    ViewData["Title"] = "Card Detail";
+}
+
+<h2>Card @Model.MaskedNumber</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Owner</dt>
+    <dd class="col-sm-9">@Model.OwnerFullName</dd>
+    <dt class="col-sm-3">Limit</dt>
+    <dd class="col-sm-9">@Model.CreditLimit.ToString("C")</dd>
+    <dt class="col-sm-3">Current debt</dt>
+    <dd class="col-sm-9">@Model.CurrentDebt.ToString("C")</dd>
+    <dt class="col-sm-3">Available credit</dt>
+    <dd class="col-sm-9">@Model.AvailableCredit.ToString("C")</dd>
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9">@Model.Status</dd>
+</dl>
+
+<div class="mb-3">
+    <a asp-action="EditLimit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit limit</a>
+    @if (Model.Status == "Active" && Model.CurrentDebt == 0)
+    {
+        <form asp-action="Cancel" method="post" class="d-inline">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-outline-danger">Cancel card</button>
+        </form>
+    }
+</div>
+
+<h4>Consumptions</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Rejection reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Consumptions)
+        {
+            <tr>
+                <td>@c.CreatedAt.ToString("g")</td>
+                <td>@c.Amount.ToString("C")</td>
+                <td>@c.Status</td>
+                <td>@c.RejectionReason</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-outline-secondary">Back</a>

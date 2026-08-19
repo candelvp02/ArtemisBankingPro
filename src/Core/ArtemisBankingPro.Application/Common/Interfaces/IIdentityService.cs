@@ -41,4 +41,5 @@ public interface IIdentityService
 
     Task<IdentityResultDto> UpdateUserProfileAsync(
         string userId, string firstName, string lastName, string email);
+    Task<ApplicationUser?> GetUserByCedulaAsync(string cedula);
 }
