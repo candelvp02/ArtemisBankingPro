@@ -1,0 +1,25 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Loans.EditRateViewModel
+@{
+    ViewData["Title"] = "Edit Interest Rate";
+}
+
+<h2>Edit Interest Rate</h2>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="EditRate" method="post" class="row g-3">
+    <input type="hidden" asp-for="Id" />
+    <div class="col-md-6">
+        <label asp-for="NewAnnualRate" class="form-label">New annual rate (%)</label>
+        <input asp-for="NewAnnualRate" class="form-control" />
+        <span asp-validation-for="NewAnnualRate" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Detail" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

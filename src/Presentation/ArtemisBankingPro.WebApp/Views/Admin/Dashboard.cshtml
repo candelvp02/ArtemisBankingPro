@@ -1,0 +1,73 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Admin.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<div class="row g-3 mt-2">
+    <div class="col-md-3">
+        <div class="card text-bg-primary">
+            <div class="card-body">
+                <h6 class="card-title">Active Clients</h6>
+                <p class="card-text fs-3">@Model.ActiveClients</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-secondary">
+            <div class="card-body">
+                <h6 class="card-title">Inactive Clients</h6>
+                <p class="card-text fs-3">@Model.InactiveClients</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-success">
+            <div class="card-body">
+                <h6 class="card-title">Active Savings Accounts</h6>
+                <p class="card-text fs-3">@Model.ActiveSavingsAccounts</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-info">
+            <div class="card-body">
+                <h6 class="card-title">Active Loans</h6>
+                <p class="card-text fs-3">@Model.ActiveLoans</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-warning">
+            <div class="card-body">
+                <h6 class="card-title">Active Credit Cards</h6>
+                <p class="card-text fs-3">@Model.ActiveCreditCards</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-dark">
+            <div class="card-body">
+                <h6 class="card-title">Average Debt per Client</h6>
+                <p class="card-text fs-3">@Model.AverageDebtPerClient.ToString("C")</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-light">
+            <div class="card-body">
+                <h6 class="card-title">Transactions (historical / today)</h6>
+                <p class="card-text fs-5">@Model.TotalHistoricalTransactions / @Model.TodayTransactions</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-light">
+            <div class="card-body">
+                <h6 class="card-title">Payments (historical / today)</h6>
+                <p class="card-text fs-5">@Model.TotalHistoricalPayments / @Model.TodayPayments</p>
+            </div>
+        </div>
+    </div>
+</div>

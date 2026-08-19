@@ -1,0 +1,74 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Loans.LoanListViewModel
+@{
+    ViewData["Title"] = "Loans";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Loans</h2>
+    <a asp-action="Assign" class="btn btn-primary">Assign new loan</a>
+</div>
+
+@if (TempData["SuccessMessage"] is not null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">All statuses</option>
+            <option value="Active" selected="@(Model.StatusFilter == "Active")">Active</option>
+            <option value="PaidOff" selected="@(Model.StatusFilter == "PaidOff")">Paid Off</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="text" name="cedula" value="@Model.CedulaFilter" class="form-control" placeholder="Search by cedula" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Filter</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Loan #</th>
+            <th>Owner</th>
+            <th>Cedula</th>
+            <th>Amount</th>
+            <th>Monthly payment</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var loan in Model.Loans)
+        {
+            <tr>
+                <td>@loan.LoanNumber</td>
+                <td>@loan.OwnerFullName</td>
+                <td>@loan.OwnerCedula</td>
+                <td>@loan.Amount.ToString("C")</td>
+                <td>@loan.MonthlyPayment.ToString("C")</td>
+                <td>
+                    <span class="badge @(loan.Status == "Active" ? "bg-success" : "bg-secondary")">@loan.Status</span>
+                </td>
+                <td class="text-end">
+                    <a asp-action="Detail" asp-route-id="@loan.Id" class="btn btn-sm btn-outline-secondary">Detail</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pageNumber="@i"
+                   asp-route-status="@Model.StatusFilter" asp-route-cedula="@Model.CedulaFilter">@i</a>
+            </li>
+        }
+    </ul>
+</nav>

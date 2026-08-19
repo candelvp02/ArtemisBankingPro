@@ -163,4 +163,23 @@ public class UserService : IUserService
             IsActive = isActive
         };
     }
+
+    public async Task<(int ActiveCount, int InactiveCount)> GetClientCountsAsync()
+    {
+        var (users, totalCount) = await _identityService.GetUsersPagedAsync(
+            "Client", excludeCommerceWhenNoRole: false, pageNumber: 1, pageSize: int.MaxValue);
+
+        var activeCount = 0;
+        var inactiveCount = 0;
+
+        foreach (var user in users)
+        {
+            var isActive = user.EmailConfirmed && (user.LockoutEnd is null || user.LockoutEnd <= DateTimeOffset.UtcNow);
+
+            if (isActive) activeCount++;
+            else inactiveCount++;
+        }
+
+        return (activeCount, inactiveCount);
+    }
 }

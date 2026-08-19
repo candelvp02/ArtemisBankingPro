@@ -1,0 +1,39 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Loans.AssignLoanViewModel
+@{
+    ViewData["Title"] = "Assign Loan";
+}
+
+<h2>Assign Loan</h2>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="Assign" method="post" class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="Cedula" class="form-label"></label>
+        <input asp-for="Cedula" class="form-control" />
+        <span asp-validation-for="Cedula" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Amount" class="form-label"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="AnnualInterestRate" class="form-label"></label>
+        <input asp-for="AnnualInterestRate" class="form-control" />
+        <span asp-validation-for="AnnualInterestRate" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="TermMonths" class="form-label"></label>
+        <input asp-for="TermMonths" class="form-control" />
+        <span asp-validation-for="TermMonths" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Assign</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
