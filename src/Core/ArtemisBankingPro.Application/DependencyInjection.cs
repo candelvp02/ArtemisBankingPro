@@ -27,6 +27,8 @@ public static class DependencyInjection
         services.Configure<AppSettings>(configuration.GetSection(AppSettings.SectionName));
 
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ISavingsAccountService, SavingsAccountService>();
 
         return services;
     }
