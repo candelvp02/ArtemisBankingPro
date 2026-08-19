@@ -7,6 +7,7 @@ using ArtemisBankingPro.Domain.Entities;
 using ArtemisBankingPro.Domain.Enums;
 using ArtemisBankingPro.Domain.Exceptions;
 using ArtemisBankingPro.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArtemisBankingPro.Application.Services.Implementations;
 
