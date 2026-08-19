@@ -202,7 +202,8 @@ public class SavingsAccountService : ISavingsAccountService
         OwnerCedula = account.ApplicationUser?.Cedula ?? string.Empty,
         Type = account.Type.ToString(),
         Status = account.Status.ToString(),
-        Balance = account.Balance
+        Balance = account.Balance,
+        OwnerEmail = account.ApplicationUser?.Email ?? string.Empty
     };
 
     private async Task<string> GenerateUniqueAccountNumberAsync()

@@ -1,0 +1,41 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Client.CardPaymentViewModel
+@{
+    ViewData["Title"] = "Pay Credit Card";
+}
+
+<h2>Pay Credit Card</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="CardPayment" method="post" class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="FromAccountNumber" class="form-label"></label>
+        <select asp-for="FromAccountNumber" class="form-select">
+            @foreach (var acc in Model.AvailableAccounts)
+            {
+                <option value="@acc">@acc</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="CardId" class="form-label"></label>
+        <select asp-for="CardId" class="form-select">
+            @foreach (var c in Model.Cards)
+            {
+                <option value="@c.Id">@c.MaskedNumber</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Amount" class="form-label"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary" onclick="return confirm('Confirm this payment?')">Pay</button>
+        <a asp-action="Home" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

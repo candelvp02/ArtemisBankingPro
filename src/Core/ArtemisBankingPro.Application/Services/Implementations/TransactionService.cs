@@ -3,6 +3,7 @@ using ArtemisBankingPro.Domain.Entities;
 using ArtemisBankingPro.Domain.Enums;
 using ArtemisBankingPro.Domain.Exceptions;
 using ArtemisBankingPro.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArtemisBankingPro.Application.Services.Implementations;
 
@@ -20,10 +21,16 @@ public class TransactionService : ITransactionService
     }
 
     public async Task<int> RegisterTransactionAsync(
-        int savingsAccountId, TransactionType type, decimal amount, string description)
+        int savingsAccountId, TransactionType type, decimal amount, string description,
+        string? performedByUserId = null)
     {
         var account = await _accountRepository.GetByIdAsync(savingsAccountId)
             ?? throw new NotFoundException(nameof(SavingsAccount), savingsAccountId);
+
+        if (account.Status != AccountStatus.Active)
+        {
+            throw new DomainException("Cannot operate on a cancelled account.");
+        }
 
         if (type == TransactionType.Debit && account.Balance < amount)
         {
@@ -42,7 +49,8 @@ public class TransactionService : ITransactionService
             Type = type,
             Amount = amount,
             BalanceAfter = account.Balance,
-            Description = description
+            Description = description,
+            PerformedByUserId = performedByUserId
         };
 
         await _transactionRepository.AddAsync(transaction);
@@ -51,9 +59,23 @@ public class TransactionService : ITransactionService
         return transaction.Id;
     }
 
-    public async Task TransferAsync(int fromAccountId, int toAccountId, decimal amount, string description)
+    public async Task TransferAsync(
+        int fromAccountId, int toAccountId, decimal amount, string description,
+        string? performedByUserId = null)
     {
-        await RegisterTransactionAsync(fromAccountId, TransactionType.Debit, amount, $"Transfer out - {description}");
-        await RegisterTransactionAsync(toAccountId, TransactionType.Credit, amount, $"Transfer in - {description}");
+        await RegisterTransactionAsync(
+            fromAccountId, TransactionType.Debit, amount, $"Transfer out - {description}", performedByUserId);
+
+        await RegisterTransactionAsync(
+            toAccountId, TransactionType.Credit, amount, $"Transfer in - {description}", performedByUserId);
+    }
+
+    public async Task<int> CountTodayByPerformedUserAsync(string performedByUserId)
+    {
+        var today = DateTime.UtcNow.Date;
+
+        return await _transactionRepository.Query()
+            .Where(t => t.PerformedByUserId == performedByUserId && t.CreatedAt.Date == today)
+            .CountAsync();
     }
 }

@@ -1,0 +1,26 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Cashier.CashierHomeViewModel
+@{
+    ViewData["Title"] = "Cashier Home";
+}
+
+<h2>Cashier Home</h2>
+
+@if (TempData["SuccessMessage"] is not null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<div class="card text-bg-primary mb-3" style="max-width: 300px;">
+    <div class="card-body">
+        <h6 class="card-title">Operations today</h6>
+        <p class="card-text fs-3">@Model.TodayOperationsCount</p>
+    </div>
+</div>
+
+<div class="d-flex gap-2 flex-wrap">
+    <a asp-action="Deposit" class="btn btn-primary">Deposit</a>
+    <a asp-action="Withdrawal" class="btn btn-primary">Withdrawal</a>
+    <a asp-action="CardPayment" class="btn btn-primary">Pay Credit Card</a>
+    <a asp-action="LoanPayment" class="btn btn-primary">Pay Loan</a>
+    <a asp-action="ThirdPartyTransaction" class="btn btn-primary">Third-Party Transaction</a>
+</div>

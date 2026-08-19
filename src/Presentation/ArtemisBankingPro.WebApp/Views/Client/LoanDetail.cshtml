@@ -1,0 +1,19 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Client.LoanDetailViewModel
+@{
+    ViewData["Title"] = "Loan Detail";
+}
+
+<h2>Loan @Model.LoanNumber</h2>
+<p>Amount: @Model.Amount.ToString("C") | Monthly payment: @Model.MonthlyPayment.ToString("C") | Status: @Model.Status</p>
+
+<table class="table table-striped table-sm">
+    <thead><tr><th>#</th><th>Due date</th><th>Total</th><th>Paid</th><th>Status</th></tr></thead>
+    <tbody>
+        @foreach (var i in Model.Installments)
+        {
+            <tr><td>@i.Number</td><td>@i.DueDate.ToString("d")</td><td>@i.TotalAmount.ToString("C")</td><td>@i.PaidAmount.ToString("C")</td><td>@i.Status</td></tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Home" class="btn btn-outline-secondary">Back</a>

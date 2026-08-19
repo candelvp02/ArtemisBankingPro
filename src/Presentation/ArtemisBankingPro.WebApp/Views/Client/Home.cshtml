@@ -1,0 +1,69 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Client.ClientHomeViewModel
+@{
+    ViewData["Title"] = "My Accounts";
+}
+
+<h2>My Products</h2>
+
+@if (TempData["SuccessMessage"] is not null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] is not null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<h4>Savings Accounts</h4>
+<table class="table table-striped">
+    <thead><tr><th>Account #</th><th>Type</th><th>Balance</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var a in Model.Accounts)
+        {
+            <tr>
+                <td>@a.AccountNumber</td>
+                <td>@a.Type</td>
+                <td>@a.Balance.ToString("C")</td>
+                <td><a asp-action="AccountDetail" asp-route-accountNumber="@a.AccountNumber" class="btn btn-sm btn-outline-secondary">Detail</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Credit Cards</h4>
+<table class="table table-striped">
+    <thead><tr><th>Card</th><th>Available credit</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var c in Model.Cards)
+        {
+            <tr>
+                <td>@c.MaskedNumber</td>
+                <td>@c.AvailableCredit.ToString("C")</td>
+                <td><a asp-action="CardDetail" asp-route-id="@c.Id" class="btn btn-sm btn-outline-secondary">Detail</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Loan</h4>
+@if (Model.Loan is not null)
+{
+    <p>
+        @Model.Loan.LoanNumber - @Model.Loan.MonthlyPayment.ToString("C")/month - @Model.Loan.Status
+        <a asp-action="LoanDetail" class="btn btn-sm btn-outline-secondary">Detail</a>
+    </p>
+}
+else
+{
+    <p class="text-muted">No active loan.</p>
+}
+
+<div class="mt-4 d-flex gap-2 flex-wrap">
+    <a asp-action="ExpressTransaction" class="btn btn-primary">Express Transaction</a>
+    <a asp-action="TransferToBeneficiary" class="btn btn-primary">Transfer to Beneficiary</a>
+    <a asp-action="CardPayment" class="btn btn-primary">Pay Credit Card</a>
+    <a asp-action="LoanPayment" class="btn btn-primary">Pay Loan</a>
+    <a asp-action="CashAdvance" class="btn btn-primary">Cash Advance</a>
+    <a asp-action="SelfTransfer" class="btn btn-primary">Transfer Between My Accounts</a>
+    <a asp-action="Beneficiaries" class="btn btn-outline-secondary">Manage Beneficiaries</a>
+</div>

@@ -222,4 +222,13 @@ public class CreditCardService : ICreditCardService
 
         return totalWithInterest;
     }
+
+    public async Task<CreditCardDto?> GetCardByNumberAsync(string cardNumber)
+    {
+        var card = await _creditCardRepository.Query()
+            .Include(c => c.ApplicationUser)
+            .FirstOrDefaultAsync(c => c.CardNumber == cardNumber);
+
+        return card is null ? null : MapToDto(card);
+    }
 }

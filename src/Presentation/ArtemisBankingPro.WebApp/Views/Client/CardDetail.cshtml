@@ -1,0 +1,19 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Client.CardDetailViewModel
+@{
+    ViewData["Title"] = "Card Detail";
+}
+
+<h2>Card @Model.MaskedNumber</h2>
+<p>Limit: @Model.CreditLimit.ToString("C") | Debt: @Model.CurrentDebt.ToString("C") | Available: @Model.AvailableCredit.ToString("C")</p>
+
+<table class="table table-striped">
+    <thead><tr><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody>
+        @foreach (var c in Model.Consumptions)
+        {
+            <tr><td>@c.CreatedAt.ToString("g")</td><td>@c.Amount.ToString("C")</td><td>@c.Status</td></tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Home" class="btn btn-outline-secondary">Back</a>

@@ -1,0 +1,51 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Client.BeneficiariesViewModel
+@{
+    ViewData["Title"] = "Beneficiaries";
+}
+
+<h2>Beneficiaries</h2>
+
+@if (TempData["SuccessMessage"] is not null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] is not null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<table class="table table-striped">
+    <thead><tr><th>Alias</th><th>Account #</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var b in Model.Beneficiaries)
+        {
+            <tr>
+                <td>@b.Alias</td>
+                <td>@b.AccountNumber</td>
+                <td>
+                    <form asp-action="RemoveBeneficiary" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@b.Id" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Add Beneficiary</h4>
+<form asp-action="AddBeneficiary" method="post" class="row g-3">
+    <div class="col-md-4">
+        <label class="form-label">Account number</label>
+        <input name="AccountNumber" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Alias</label>
+        <input name="Alias" class="form-control" />
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+</form>
+
+<a asp-action="Home" class="btn btn-outline-secondary mt-3">Back</a>

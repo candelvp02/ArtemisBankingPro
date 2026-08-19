@@ -67,6 +67,19 @@ public class LoanService : ILoanService
 
         return loan.Id;
     }
+    public async Task<LoanDto?> GetLoanByNumberAsync(string loanNumber)
+    {
+        var loan = await _loanRepository.GetByLoanNumberAsync(loanNumber);
+
+        if (loan is null)
+        {
+            return null;
+        }
+
+        var withInstallments = await _loanRepository.GetWithInstallmentsAsync(loan.Id);
+
+        return withInstallments is null ? null : MapToDto(withInstallments, includeInstallments: true);
+    }
 
     public async Task UpdateRateAsync(int loanId, decimal newAnnualRate)
     {

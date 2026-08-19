@@ -1,0 +1,41 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Client.SelfTransferViewModel
+@{
+    ViewData["Title"] = "Transfer Between My Accounts";
+}
+
+<h2>Transfer Between My Accounts</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="SelfTransfer" method="post" class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="FromAccountNumber" class="form-label"></label>
+        <select asp-for="FromAccountNumber" class="form-select">
+            @foreach (var acc in Model.AvailableAccounts)
+            {
+                <option value="@acc">@acc</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="ToAccountNumber" class="form-label"></label>
+        <select asp-for="ToAccountNumber" class="form-select">
+            @foreach (var acc in Model.AvailableAccounts)
+            {
+                <option value="@acc">@acc</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Amount" class="form-label"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary" onclick="return confirm('Confirm this transfer?')">Send</button>
+        <a asp-action="Home" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

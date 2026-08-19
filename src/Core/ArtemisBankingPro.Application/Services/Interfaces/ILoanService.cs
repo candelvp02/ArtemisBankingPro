@@ -10,5 +10,6 @@ public interface ILoanService
     Task<PagedResult<LoanDto>> GetLoansAsync(string? status, string? cedula, int pageNumber, int pageSize);
     Task<LoanDto?> GetLoanByIdAsync(int loanId);
     Task PayInstallmentAsync(int loanId, int savingsAccountId, decimal amount);
+    Task<LoanDto?> GetLoanByNumberAsync(string loanNumber);
     Task<LoanDto?> GetActiveLoanByUserIdAsync(string applicationUserId);
 }

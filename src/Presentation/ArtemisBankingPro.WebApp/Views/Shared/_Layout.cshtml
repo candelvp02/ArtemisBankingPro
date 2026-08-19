@@ -30,15 +30,17 @@
                                 <li class="nav-item"><a class="nav-link text-light" asp-controller="SavingsAccounts" asp-action="Index">Savings Accounts</a></li>
                                 <li class="nav-item"><a class="nav-link text-light" asp-controller="CreditCards" asp-action="Index">Credit Cards</a></li>
                                 <li class="nav-item"><a class="nav-link text-light" asp-controller="Loans" asp-action="Index">Loans</a></li>
-                                
+                                  
                             }
                             @if (User.IsInRole("Cashier"))
                             {
+                                <li class="nav-item"><a class="nav-link text-light" asp-controller="Cashier" asp-action="Home">Cashier Home</a></li>
                                 <li class="nav-item"><a class="nav-link text-light" asp-controller="Cashier" asp-action="Home">Cashier Home</a></li>
                             }
                             @if (User.IsInRole("Client"))
                             {
                                 <li class="nav-item"><a class="nav-link text-light" asp-controller="Client" asp-action="Home">My Accounts</a></li>
+                                <li class="nav-item"><a class="nav-link text-light" asp-controller="Client" asp-action="Beneficiaries">Beneficiaries</a></li>
                             }
                         </ul>
                         <ul class="navbar-nav">

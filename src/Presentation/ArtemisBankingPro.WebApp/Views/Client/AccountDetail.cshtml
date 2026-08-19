@@ -1,0 +1,25 @@
+﻿@model ArtemisBankingPro.WebApp.ViewModels.Client.AccountDetailViewModel
+@{
+    ViewData["Title"] = "Account Detail";
+}
+
+<h2>Account @Model.AccountNumber</h2>
+<p>@Model.Type - Balance: @Model.Balance.ToString("C")</p>
+
+<table class="table table-striped">
+    <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Balance after</th><th>Description</th></tr></thead>
+    <tbody>
+        @foreach (var t in Model.Transactions)
+        {
+            <tr>
+                <td>@t.CreatedAt.ToString("g")</td>
+                <td>@t.Type</td>
+                <td>@t.Amount.ToString("C")</td>
+                <td>@t.BalanceAfter.ToString("C")</td>
+                <td>@t.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Home" class="btn btn-outline-secondary">Back</a>

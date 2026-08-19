@@ -14,4 +14,5 @@ public interface ICreditCardService
     Task<IReadOnlyList<CreditCardDto>> GetCardsByUserIdAsync(string applicationUserId);
     Task PayCardAsync(int cardId, int savingsAccountId, decimal amount);
     Task<decimal> CashAdvanceAsync(int cardId, int savingsAccountId, decimal amount);
+    Task<CreditCardDto?> GetCardByNumberAsync(string cardNumber);
 }
