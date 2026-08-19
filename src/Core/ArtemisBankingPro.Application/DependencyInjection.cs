@@ -31,6 +31,10 @@ public static class DependencyInjection
         services.AddScoped<ISavingsAccountService, SavingsAccountService>();
         services.AddScoped<ITransactionService, TransactionService>();
         services.AddScoped<ICreditCardService, CreditCardService>();
+        services.AddScoped<ILoanService, LoanService>();
+        services.AddScoped<ICommerceService, CommerceService>();
+        services.AddScoped<IHermesPayService, HermesPayService>();
+        services.AddScoped<IBeneficiaryService, BeneficiaryService>();
 
         return services;
     }

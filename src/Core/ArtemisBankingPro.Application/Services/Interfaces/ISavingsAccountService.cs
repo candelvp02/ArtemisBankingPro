@@ -14,4 +14,5 @@ public interface ISavingsAccountService
     Task<PagedResult<TransactionDto>> GetAccountTransactionsAsync(
         string accountNumber, int pageNumber, int pageSize);
     Task<SavingsAccountDto?> GetPrincipalAccountAsync(string applicationUserId);
+    Task<IReadOnlyList<SavingsAccountDto>> GetAccountsByUserIdAsync(string applicationUserId);
 }

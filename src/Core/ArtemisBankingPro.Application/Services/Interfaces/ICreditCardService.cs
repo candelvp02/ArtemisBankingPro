@@ -11,4 +11,7 @@ public interface ICreditCardService
     Task<PagedResult<CreditCardDto>> GetCardsAsync(string? status, string? cedula, int pageNumber, int pageSize);
     Task<CreditCardDto?> GetCardByIdAsync(int cardId);
     Task<IReadOnlyList<CardConsumptionDto>> GetCardConsumptionsAsync(int cardId);
+    Task<IReadOnlyList<CreditCardDto>> GetCardsByUserIdAsync(string applicationUserId);
+    Task PayCardAsync(int cardId, int savingsAccountId, decimal amount);
+    Task<decimal> CashAdvanceAsync(int cardId, int savingsAccountId, decimal amount);
 }

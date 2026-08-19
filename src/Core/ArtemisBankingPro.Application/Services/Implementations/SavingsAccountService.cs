@@ -216,4 +216,14 @@ public class SavingsAccountService : ISavingsAccountService
 
         return accountNumber;
     }
+
+    public async Task<IReadOnlyList<SavingsAccountDto>> GetAccountsByUserIdAsync(string applicationUserId)
+    {
+        var accounts = await _savingsAccountRepository.Query()
+            .Include(a => a.ApplicationUser)
+            .Where(a => a.ApplicationUserId == applicationUserId)
+            .ToListAsync();
+
+        return accounts.Select(MapToDto).ToList();
+    }
 }

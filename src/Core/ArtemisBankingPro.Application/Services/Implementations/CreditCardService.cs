@@ -16,17 +16,20 @@ public class CreditCardService : ICreditCardService
     private readonly ISavingsAccountRepository _savingsAccountRepository;
     private readonly IPasswordHasher _hasher;
     private readonly IEmailService _emailService;
+    private readonly ITransactionService _transactionService;
 
     public CreditCardService(
         ICreditCardRepository creditCardRepository,
         ISavingsAccountRepository savingsAccountRepository,
         IPasswordHasher hasher,
-        IEmailService emailService)
+        IEmailService emailService,
+        ITransactionService transactionService)
     {
         _creditCardRepository = creditCardRepository;
         _savingsAccountRepository = savingsAccountRepository;
         _hasher = hasher;
         _emailService = emailService;
+        _transactionService = transactionService;
     }
 
     public async Task<int> AssignCardAsync(AssignCreditCardDto dto)
@@ -166,5 +169,56 @@ public class CreditCardService : ICreditCardService
         while (await _creditCardRepository.CardNumberExistsAsync(cardNumber));
 
         return cardNumber;
+    }
+    public async Task<IReadOnlyList<CreditCardDto>> GetCardsByUserIdAsync(string applicationUserId)
+    {
+        var cards = await _creditCardRepository.Query()
+            .Include(c => c.ApplicationUser)
+            .Where(c => c.ApplicationUserId == applicationUserId)
+            .ToListAsync();
+
+        return cards.Select(MapToDto).ToList();
+    }
+
+    public async Task PayCardAsync(int cardId, int savingsAccountId, decimal amount)
+    {
+        var card = await _creditCardRepository.GetByIdAsync(cardId)
+            ?? throw new NotFoundException(nameof(CreditCard), cardId);
+
+        if (amount > card.CurrentDebt)
+        {
+            throw new DomainException("Payment amount exceeds current debt. Overpayment is not allowed.");
+        }
+
+        await _transactionService.RegisterTransactionAsync(
+            savingsAccountId, TransactionType.Debit, amount, $"Credit card payment - {card.MaskedNumber}");
+
+        card.CurrentDebt -= amount;
+        _creditCardRepository.Update(card);
+        await _creditCardRepository.SaveChangesAsync();
+    }
+
+    public async Task<decimal> CashAdvanceAsync(int cardId, int savingsAccountId, decimal amount)
+    {
+        const decimal cashAdvanceInterestRate = 0.0625m;
+
+        var card = await _creditCardRepository.GetByIdAsync(cardId)
+            ?? throw new NotFoundException(nameof(CreditCard), cardId);
+
+        var totalWithInterest = Math.Round(amount * (1 + cashAdvanceInterestRate), 2);
+
+        if (totalWithInterest > card.AvailableCredit)
+        {
+            throw new DomainException("Insufficient available credit for this cash advance.");
+        }
+
+        card.CurrentDebt += totalWithInterest;
+        _creditCardRepository.Update(card);
+        await _creditCardRepository.SaveChangesAsync();
+
+        await _transactionService.RegisterTransactionAsync(
+            savingsAccountId, TransactionType.Credit, amount, $"Cash advance from card {card.MaskedNumber}");
+
+        return totalWithInterest;
     }
 }
